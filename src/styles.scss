@@ -1,1 +1,122 @@
 /* You can add global styles to this file, and also import other style files */
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+@import "assets/scss/fonts/fonts";
+@import "assets/scss/plugins/icons/boxicons";
+@import "assets/scss/plugins/icons/remixicon";
+@import "assets/scss/plugins/icons/materialdesignicons";
+
+@import "/node_modules/bootstrap/scss/functions";
+@import "/node_modules/bootstrap/scss/variables";
+@import "assets/scss/config/default/variables";
+@import "assets/scss/config/default/variables-custom";
+@import "assets/scss/config/default/variables-dark";
+@import "assets/scss/components/utilities";
+@import "/node_modules/bootstrap/scss/bootstrap";
+
+
+@import "assets/scss/structure/topbar";
+@import "assets/scss/structure/page-head";
+@import "assets/scss/structure/footer";
+@import "assets/scss/structure/vertical";
+@import "assets/scss/structure/horizontal";
+@import "assets/scss/structure/two-column";
+@import "assets/scss/structure/layouts";
+
+
+
+// Bootstrap components
+@import "assets/scss/components/root";
+@import "assets/scss/components/reboot";
+@import "assets/scss/components/alerts";
+@import "assets/scss/components/badge";
+@import "assets/scss/components/buttons";
+@import "assets/scss/components/breadcrumb";
+@import "assets/scss/components/card";
+@import "assets/scss/components/dropdown";
+@import "assets/scss/components/nav";
+@import "assets/scss/components/table";
+@import "assets/scss/components/modal";
+@import "assets/scss/components/pagination";
+@import "assets/scss/components/progress";
+@import "assets/scss/components/popover";
+@import "assets/scss/components/type";
+@import "assets/scss/components/form-check";
+@import "assets/scss/components/form-control";
+@import "assets/scss/components/list-group";
+
+// Components
+@import "assets/scss/components/waves";
+@import "assets/scss/components/avatar";
+@import "assets/scss/components/accordion";
+@import "assets/scss/components/helper";
+@import "assets/scss/components/preloader";
+@import "assets/scss/components/forms";
+@import "assets/scss/components/widgets";
+@import "assets/scss/components/demos";
+@import "assets/scss/components/print";
+@import "assets/scss/components/ribbons";
+@import "assets/scss/components/toast";
+@import "assets/scss/components/scrollspy";
+
+// Plugins
+//@import "assets/scss/plugins/custom-scrollbar";
+//@import "assets/scss/plugins/prismjs";
+//@import "assets/scss/plugins/sweetalert2";
+//@import "assets/scss/plugins/dropzone";
+//@import "assets/scss/plugins/range-slider";
+//@import "assets/scss/plugins/sortablejs";
+//@import "assets/scss/plugins/tour";
+//@import "assets/scss/plugins/swiper";
+//@import "assets/scss/plugins/multijs";
+//@import "assets/scss/plugins/colorpicker";
+//@import "assets/scss/plugins/filepond";
+//@import "assets/scss/plugins/form-input-spin";
+//@import "assets/scss/plugins/ckeditor";
+//@import "assets/scss/plugins/quilljs";
+//@import "assets/scss/plugins/gridjs";
+//@import "assets/scss/plugins/listjs";
+//@import "assets/scss/plugins/apexcharts";
+//@import "assets/scss/plugins/chartjs";
+//@import "assets/scss/plugins/echarts";
+//@import "assets/scss/plugins/google-map";
+//@import "assets/scss/plugins/autocomplete";
+//@import "assets/scss/plugins/vector-maps";
+//@import "assets/scss/plugins/leaflet-maps";
+//@import "assets/scss/plugins/fullcalendar";
+//@import "assets/scss/plugins/emoji-picker";
+//@import "assets/scss/plugins/datatables";
+//@import "assets/scss/plugins/select2";
+
+// Plugins
+//@import "assets/scss/plugins/toastify";
+//@import "assets/scss/plugins/choices";
+//@import "assets/scss/plugins/flatpicker";
+//@import "assets/scss/plugins/flag-input";
+//@import "assets/scss/plugins/form-wizard";
+
+// Pages
+@import "assets/scss/pages/authentication";
+@import "assets/scss/pages/dashboard";
+@import "assets/scss/pages/timeline";
+@import "assets/scss/pages/gallery";
+@import "assets/scss/pages/errors";
+@import "assets/scss/pages/profile";
+@import "assets/scss/pages/sitemap";
+@import "assets/scss/pages/team";
+@import "assets/scss/pages/coming-soon";
+@import "assets/scss/pages/search-results";
+@import "assets/scss/pages/ecommerce";
+@import "assets/scss/pages/invoice";
+@import "assets/scss/pages/chat";
+@import "assets/scss/pages/email";
+@import "assets/scss/pages/kanban";
+@import "assets/scss/pages/landing";
+@import "assets/scss/pages/nft-landing";
+@import "assets/scss/pages/file-manager";
+@import "assets/scss/pages/to-do";
+@import "assets/scss/pages/jobs";
+@import "assets/scss/pages/job-landing";
+
+@import "assets/scss/config/default/angular-custom";
