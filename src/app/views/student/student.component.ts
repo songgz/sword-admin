@@ -2,17 +2,25 @@ import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {BreadcrumbsComponent} from "../../shared/breadcrumbs/breadcrumbs.component";
 import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {NgbModal, NgbPagination, NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbDropdown,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbModal,
+  NgbPagination,
+  NgbTooltip
+} from "@ng-bootstrap/ng-bootstrap";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {RestApiService} from "../../core/services/rest-api.service";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @Component({
   selector: 'app-student',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule],
+  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
@@ -123,8 +131,41 @@ export class StudentComponent implements OnInit {
           this.gForm.reset();
         });
       }
-
     }
+  }
+
+  // Default
+  counter = 1;
+  increment() {
+    this.counter++;
+  }
+
+  decrement() {
+    this.counter--;
+  }
+
+
+
+
+  priex :string = "";
+
+  names :string[] = ["aa"];
+
+  add() {
+    console.log(this.names);
+    let ns = [];
+    if(this.counter === 1) {
+      ns.push(this.priex);
+    }else{
+      for (let i = 1; i <= this.counter; i++) {
+        ns.push(this.priex + i);
+      }
+    }
+    this.names = [...this.names, ...ns];
+    console.log(this.counter);
+    console.log(this.names);
+
+
 
   }
 }

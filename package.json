@@ -20,6 +20,7 @@
     "@angular/router": "^16.2.0",
     "@lordicon/element": "^1.1.0",
     "@ng-bootstrap/ng-bootstrap": "^15.1.1",
+    "@ng-select/ng-select": "^11.2.0",
     "@popperjs/core": "^2.11.6",
     "angularx-flatpickr": "^7.3.0",
     "bootstrap": "^5.2.3",

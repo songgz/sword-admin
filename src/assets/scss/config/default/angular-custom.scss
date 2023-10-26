@@ -7,7 +7,7 @@ File: Custom Css File
 */
 
 // Select 2
-//@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@ng-select/ng-select/themes/default.theme.css";
 
 // Lightbox
 //@import "~ngx-lightbox/lightbox.css";
@@ -348,8 +348,8 @@ $value in $theme-colors {
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   white-space: nowrap;
-  background-color: var(--tb-primary);
-  border: 1px solid var(--tb-primary);
+  background-color: $primary;
+  border: 1px solid $primary;
   color: #fff;
   border-radius: 7px;
   padding: 2px 7px;

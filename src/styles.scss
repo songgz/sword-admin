@@ -12,7 +12,6 @@
 @import "assets/scss/config/default/variables";
 @import "assets/scss/config/default/variables-custom";
 @import "assets/scss/config/default/variables-dark";
-@import "assets/scss/components/utilities";
 @import "/node_modules/bootstrap/scss/bootstrap";
 
 
@@ -59,6 +58,8 @@
 @import "assets/scss/components/ribbons";
 @import "assets/scss/components/toast";
 @import "assets/scss/components/scrollspy";
+@import "assets/scss/components/utilities";
+
 
 // Plugins
 //@import "assets/scss/plugins/custom-scrollbar";
@@ -72,7 +73,7 @@
 //@import "assets/scss/plugins/multijs";
 //@import "assets/scss/plugins/colorpicker";
 //@import "assets/scss/plugins/filepond";
-//@import "assets/scss/plugins/form-input-spin";
+@import "assets/scss/plugins/form-input-spin";
 //@import "assets/scss/plugins/ckeditor";
 //@import "assets/scss/plugins/quilljs";
 //@import "assets/scss/plugins/gridjs";
@@ -87,36 +88,36 @@
 //@import "assets/scss/plugins/fullcalendar";
 //@import "assets/scss/plugins/emoji-picker";
 //@import "assets/scss/plugins/datatables";
-//@import "assets/scss/plugins/select2";
+@import "assets/scss/plugins/select2";
 
 // Plugins
 //@import "assets/scss/plugins/toastify";
-//@import "assets/scss/plugins/choices";
+@import "assets/scss/plugins/choices";
 //@import "assets/scss/plugins/flatpicker";
 //@import "assets/scss/plugins/flag-input";
 //@import "assets/scss/plugins/form-wizard";
 
 // Pages
-@import "assets/scss/pages/authentication";
-@import "assets/scss/pages/dashboard";
-@import "assets/scss/pages/timeline";
-@import "assets/scss/pages/gallery";
-@import "assets/scss/pages/errors";
-@import "assets/scss/pages/profile";
-@import "assets/scss/pages/sitemap";
-@import "assets/scss/pages/team";
-@import "assets/scss/pages/coming-soon";
-@import "assets/scss/pages/search-results";
-@import "assets/scss/pages/ecommerce";
-@import "assets/scss/pages/invoice";
-@import "assets/scss/pages/chat";
-@import "assets/scss/pages/email";
-@import "assets/scss/pages/kanban";
-@import "assets/scss/pages/landing";
-@import "assets/scss/pages/nft-landing";
-@import "assets/scss/pages/file-manager";
-@import "assets/scss/pages/to-do";
-@import "assets/scss/pages/jobs";
-@import "assets/scss/pages/job-landing";
+//@import "assets/scss/pages/authentication";
+//@import "assets/scss/pages/dashboard";
+//@import "assets/scss/pages/timeline";
+//@import "assets/scss/pages/gallery";
+//@import "assets/scss/pages/errors";
+//@import "assets/scss/pages/profile";
+//@import "assets/scss/pages/sitemap";
+//@import "assets/scss/pages/team";
+//@import "assets/scss/pages/coming-soon";
+//@import "assets/scss/pages/search-results";
+//@import "assets/scss/pages/ecommerce";
+//@import "assets/scss/pages/invoice";
+//@import "assets/scss/pages/chat";
+//@import "assets/scss/pages/email";
+//@import "assets/scss/pages/kanban";
+//@import "assets/scss/pages/landing";
+//@import "assets/scss/pages/nft-landing";
+//@import "assets/scss/pages/file-manager";
+//@import "assets/scss/pages/to-do";
+//@import "assets/scss/pages/jobs";
+//@import "assets/scss/pages/job-landing";
 
 @import "assets/scss/config/default/angular-custom";
