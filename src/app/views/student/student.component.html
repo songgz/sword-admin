@@ -30,7 +30,7 @@
         <div class="row g-3">
           <div class="col-xl-6">
             <div class="search-box">
-              <input type="text" name="searchTerm" (input)="search($event)" class="form-control" placeholder="名称，邮编，负责人...">
+              <input type="text" name="searchTerm" (input)="search($event)" class="form-control" placeholder="姓名，帐号，电话...">
               <i class="ri-search-line search-icon"></i>
             </div>
           </div>
@@ -232,15 +232,23 @@
 
   <div   class="tablelist-form" autocomplete="off">
     <div class="modal-body row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <input type="text" name="nn1" [(ngModel)]="priex" value="{{priex}}" class="form-control" placeholder="姓名/前缀">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="input-step">
           <button type="button" class="minus" (click)="decrement()">–</button>
           <input type="number" class="product-quantity" value="{{counter}}" min="1" max="100" readonly>
           <button type="button" class="plus" (click)="increment()">+</button>
         </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-control" data-plugin="choices" data-choices
+                data-choices-search-false name="choices-single-default" id="idStatus"
+                [(ngModel)]="grade">        <option value="" selected> Select Status</option>
+          <option value="Active">Active</option>
+          <option value="Block">Block</option>
+        </select>
       </div>
       <div class="col-md-4">
         <button type="button" (click)="add()" class="btn btn-primary">添加</button>
@@ -259,7 +267,7 @@
                            [multiple]="true"
                            [selectOnTab]="true"
                            [isOpen]="false"
-                           [(ngModel)]="names">
+                           [(ngModel)]="studentNames">
                 </ng-select>
               </div>
             </div>
@@ -271,7 +279,7 @@
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
                 (click)="modal.close('Close click')">关闭</button>
-        <button type="submit" class="btn btn-success">提交</button>
+        <button type="button"  (click)="mutilCreate()" class="btn btn-success">提交</button>
       </div>
     </div>
   </div>

@@ -148,11 +148,12 @@ export class StudentComponent implements OnInit {
 
 
   priex :string = "";
+  grade :string = "";
 
-  names :string[] = ["aa"];
+  studentNames :string[] = [];
 
   add() {
-    console.log(this.names);
+    console.log(this.studentNames);
     let ns = [];
     if(this.counter === 1) {
       ns.push(this.priex);
@@ -161,11 +162,18 @@ export class StudentComponent implements OnInit {
         ns.push(this.priex + i);
       }
     }
-    this.names = [...this.names, ...ns];
-    console.log(this.counter);
-    console.log(this.names);
+    this.studentNames = [...this.studentNames, ...ns];
+  }
 
-
-
+  mutilCreate() {
+    let b :any[] = [];
+    this.studentNames.forEach(n => {
+      b.push({name: n});
+    });
+    this.rest.post('students/multi_create', {students: b}).subscribe(body => {
+      this.models = body.data;
+      console.log(body);
+      this.modal.dismissAll();
+    });
   }
 }
