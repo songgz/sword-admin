@@ -1,20 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+//@import "node_modules/shepherd.js/dist/css/shepherd.css";
+//@import "node_modules/flatpickr/dist/flatpickr.css";
+//@import "src/styles.scss";
+//@import "node_modules/@ctrl/ngx-emoji-mart/picker.css";
+//@import "node_modules/slick-carousel/slick/slick.scss";
+//@import "node_modules/slick-carousel/slick/slick-theme.scss";
+//@import "assets/scss/config/default/bootstrap.scss";
 
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "assets/scss/config/default/variables";
+@import "assets/scss/config/default/variables-dark";
+@import "assets/scss/components/utilities";
+@import "node_modules/bootstrap/scss/bootstrap";
+
+//@import "assets/scss/config/default/app.scss";
+//Fonts
 @import "assets/scss/fonts/fonts";
-@import "assets/scss/plugins/icons/boxicons";
-@import "assets/scss/plugins/icons/remixicon";
-@import "assets/scss/plugins/icons/materialdesignicons";
 
-@import "/node_modules/bootstrap/scss/functions";
-@import "/node_modules/bootstrap/scss/variables";
+//Core files
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
 @import "assets/scss/config/default/variables";
 @import "assets/scss/config/default/variables-custom";
 @import "assets/scss/config/default/variables-dark";
-@import "/node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/mixins";
 
 
+// Structure
 @import "assets/scss/structure/topbar";
 @import "assets/scss/structure/page-head";
 @import "assets/scss/structure/footer";
@@ -23,7 +36,19 @@
 @import "assets/scss/structure/two-column";
 @import "assets/scss/structure/layouts";
 
-
+// Components
+@import "assets/scss/components/waves";
+@import "assets/scss/components/avatar";
+@import "assets/scss/components/accordion";
+@import "assets/scss/components/helper";
+@import "assets/scss/components/preloader";
+@import "assets/scss/components/forms";
+@import "assets/scss/components/widgets";
+@import "assets/scss/components/demos";
+@import "assets/scss/components/print";
+@import "assets/scss/components/ribbons";
+@import "assets/scss/components/toast";
+@import "assets/scss/components/scrollspy";
 
 // Bootstrap components
 @import "assets/scss/components/root";
@@ -44,22 +69,6 @@
 @import "assets/scss/components/form-check";
 @import "assets/scss/components/form-control";
 @import "assets/scss/components/list-group";
-
-// Components
-@import "assets/scss/components/waves";
-@import "assets/scss/components/avatar";
-@import "assets/scss/components/accordion";
-@import "assets/scss/components/helper";
-@import "assets/scss/components/preloader";
-@import "assets/scss/components/forms";
-@import "assets/scss/components/widgets";
-@import "assets/scss/components/demos";
-@import "assets/scss/components/print";
-@import "assets/scss/components/ribbons";
-@import "assets/scss/components/toast";
-@import "assets/scss/components/scrollspy";
-@import "assets/scss/components/utilities";
-
 
 // Plugins
 //@import "assets/scss/plugins/custom-scrollbar";
@@ -88,11 +97,11 @@
 //@import "assets/scss/plugins/fullcalendar";
 //@import "assets/scss/plugins/emoji-picker";
 //@import "assets/scss/plugins/datatables";
-@import "assets/scss/plugins/select2";
+//@import "assets/scss/plugins/select2";
 
 // Plugins
 //@import "assets/scss/plugins/toastify";
-@import "assets/scss/plugins/choices";
+//@import "assets/scss/plugins/choices";
 //@import "assets/scss/plugins/flatpicker";
 //@import "assets/scss/plugins/flag-input";
 //@import "assets/scss/plugins/form-wizard";
@@ -120,4 +129,17 @@
 //@import "assets/scss/pages/jobs";
 //@import "assets/scss/pages/job-landing";
 
-@import "assets/scss/config/default/angular-custom";
+// Angular Custom Scss
+@import "assets/scss/config/default/angular-custom.scss";
+
+// Custom Scss
+@import "assets/scss/config/default/custom.scss";
+
+// // RTL Set
+// @import "../../rtl/components-rtl";
+// @import "../../rtl/layouts-rtl";
+// @import "../../rtl/pages-rtl";
+// @import "../../rtl/plugins-rtl";
+
+
+@import "assets/scss/icons.scss";

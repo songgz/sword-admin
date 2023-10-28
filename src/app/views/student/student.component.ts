@@ -168,7 +168,7 @@ export class StudentComponent implements OnInit {
   mutilCreate() {
     let b :any[] = [];
     this.studentNames.forEach(n => {
-      b.push({name: n});
+      b.push({name: n, grade: this.grade});
     });
     this.rest.post('students/multi_create', {students: b}).subscribe(body => {
       this.models = body.data;

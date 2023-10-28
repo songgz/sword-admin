@@ -64,8 +64,6 @@
                 <td>{{model.avatar}}</td>
                 <td>
                   <ul class="list-inline hstack gap-2 mb-0">
-
-
                     <li class="list-inline-item edit" ngbTooltip="Call" placement="top">
                       <a href="javascript:void(0);" class="text-muted d-inline-block">
                         <i class="ri-phone-line fs-16"></i>
@@ -92,7 +90,7 @@
                                  data-bs-toggle="modal"
                                  (click)="editModal(model.id, formTpl)"><i
                             class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>
-                            Edit</a></li>
+                            修改</a></li>
                           <li>
                             <a class="dropdown-item remove-item-btn" href="javascript:void(0);"
                                data-bs-toggle="modal"
@@ -190,10 +188,26 @@
 
       <div class="mb-3">
         <label for="grade-field" class="form-label">年级</label>
-        <input type="text" id="grade-field" class="form-control" placeholder="年级"
-               formControlName="grade"
-               [ngClass]="{ 'is-invalid': form['grade'].errors }" />
-        <div class="invalid-feedback">请输入年级。</div>
+        <select class="form-select" id="grade-field" formControlName="grade">
+          <option value="" selected>年级</option>
+          <option value="小学一年">小学一年</option>
+          <option value="小学二年">小学二年</option>
+          <option value="小学三年">小学三年</option>
+          <option value="小学四年">小学四年</option>
+          <option value="小学五年">小学五年</option>
+          <option value="小学六年">小学六年</option>
+          <option value="初中一年">初中一年</option>
+          <option value="初中二年">初中二年</option>
+          <option value="初中三年">初中三年</option>
+          <option value="初中四年">初中四年</option>
+          <option value="高中一年">高中一年</option>
+          <option value="高中二年">高中二年</option>
+          <option value="高中三年">高中三年</option>
+          <option value="大学一年">大学一年</option>
+          <option value="大学二年">大学二年</option>
+          <option value="大学三年">大学三年</option>
+          <option value="大学四年">大学四年</option>
+        </select>
       </div>
 
       <div class="mb-3">
@@ -242,15 +256,29 @@
           <button type="button" class="plus" (click)="increment()">+</button>
         </div>
       </div>
-      <div class="col-md-3">
-        <select class="form-control" data-plugin="choices" data-choices
-                data-choices-search-false name="choices-single-default" id="idStatus"
-                [(ngModel)]="grade">        <option value="" selected> Select Status</option>
-          <option value="Active">Active</option>
-          <option value="Block">Block</option>
+      <div class="col-md-4">
+        <select class="form-select" [(ngModel)]="grade">
+          <option value="" selected>年级</option>
+          <option value="小学一年">小学一年</option>
+          <option value="小学二年">小学二年</option>
+          <option value="小学三年">小学三年</option>
+          <option value="小学四年">小学四年</option>
+          <option value="小学五年">小学五年</option>
+          <option value="小学六年">小学六年</option>
+          <option value="初中一年">初中一年</option>
+          <option value="初中二年">初中二年</option>
+          <option value="初中三年">初中三年</option>
+          <option value="初中四年">初中四年</option>
+          <option value="高中一年">高中一年</option>
+          <option value="高中二年">高中二年</option>
+          <option value="高中三年">高中三年</option>
+          <option value="大学一年">大学一年</option>
+          <option value="大学二年">大学二年</option>
+          <option value="大学三年">大学三年</option>
+          <option value="大学四年">大学四年</option>
         </select>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <button type="button" (click)="add()" class="btn btn-primary">添加</button>
       </div>
 
