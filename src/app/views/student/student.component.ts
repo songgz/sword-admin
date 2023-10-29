@@ -89,7 +89,7 @@ export class StudentComponent implements OnInit {
     //this.modelId = id;
     this.modal.open(content, { size: 'md', centered: true });
     let modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = '编辑学员';
+    modelTitle.innerHTML = '编辑学生';
 
     let model = this.models.find(obj => obj.id === id);
     this.gForm.controls['id'].setValue(model.id);

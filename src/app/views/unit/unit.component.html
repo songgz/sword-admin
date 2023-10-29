@@ -1,5 +1,5 @@
 <!-- Start Breadcrumbs -->
-<app-breadcrumbs title="充值卡管理" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<app-breadcrumbs title="单元管理" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
 <!-- End Breadcrumbs -->
 
 <div class="row">
@@ -9,7 +9,7 @@
         <div class="row g-4 align-items-center">
           <div class="col-sm">
             <div>
-              <h5 class="card-title mb-0">充值卡列表</h5>
+              <h5 class="card-title mb-0">单元列表</h5>
             </div>
           </div>
           <div class="col-sm-auto">
@@ -43,24 +43,24 @@
             <table class="table">
               <thead class="table-light text-muted">
               <tr>
-                <th>卡号</th>
-                <th>学校</th>
-                <td>时长(天)</td>
-                <th>学生姓名</th>
-                <th>学生帐号</th>
+                <th>课本</th>
+                <th>单元</th>
+                <td>单词数</td>
                 <th>状态</th>
-                <th>激活时间</th>
+                <td>序号</td>
+                <th>操作</th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let model of models">
-                <td>{{model.card_no}}</td>
-                <td>{{model.school_name}}</td>
-                <td>{{model.days}}</td>
-                <td>{{model.student_name}}</td>
-                <td>{{model.student_acct_no}}</td>
+                <td>{{model.book_name}}</td>
+                <td>{{model.name}}</td>
+                <td>{{model.word_count}}</td>
                 <td>{{model.status}}</td>
-                <td>{{model.active_time}}</td>
+                <td>{{model.seq}}</td>
+                <td>
+
+                </td>
               </tr>
               </tbody>
             </table>
@@ -77,8 +77,14 @@
             <!-- Pagination -->
             <div class="col col-sm-5">
               <div class="text-sm-right float-sm-end listjs-pagination">
-                <ngb-pagination [collectionSize]="pagination.total_count" [(page)]="pagination.page_no"
-                                [pageSize]="pagination.page_size" (pageChange)="loadPage()" >
+                <ngb-pagination
+                  [collectionSize]="pagination.total_count"
+                  [(page)]="pagination.page_no"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  [pageSize]="pagination.page_size"
+                  (pageChange)="loadPage()" >
                 </ngb-pagination>
               </div>
             </div>
@@ -106,13 +112,6 @@
   </div>
   <form (ngSubmit)="genCard()" [formGroup]="gForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-
-      <div class="mb-3">
-        <label for="school-field" class="form-label">分校</label>
-        <select class="form-select" id="school-field" formControlName="school_id">
-          <option *ngFor="let school of schools" value="{{school.id}}">{{school.name}}</option>
-        </select>
-      </div>
 
       <div class="mb-3">
         <label for="kind-field" class="form-label">卡种类</label>

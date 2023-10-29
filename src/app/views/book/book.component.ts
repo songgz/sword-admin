@@ -21,15 +21,18 @@ export class BookComponent implements OnInit {
   breadCrumbItems: any[] = [];
   submitted: boolean | undefined;
   customerForm!: UntypedFormGroup;
-  pagination: any = {};
+  pagination = {page_no: 1, page_size: 20, total_count: 0};
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
-    this.rest.get('books').subscribe(body => {
-      this.books = body.data;
-      this.pagination = body.pagination;
-    });
   }
+
+  // loadPage() {
+  //   this.rest.get('books').subscribe(body => {
+  //     this.books = body.data;
+  //     this.pagination = body.pagination;
+  //   });
+  // }
 
   ngOnInit(): void {
     this.breadCrumbItems = [
@@ -45,6 +48,8 @@ export class BookComponent implements OnInit {
       date: ['', [Validators.required]],
       status: ['', [Validators.required]]
     });
+
+    this.loadPage();
   }
 
   // Delete Data
@@ -103,17 +108,19 @@ export class BookComponent implements OnInit {
   /**0
    * Confirmation mail model
    */
-  deleteId: any;
+  modelId: any;
 
   confirm(content: any, id: any) {
-    this.deleteId = id;
+    this.modelId = id;
     this.modal.open(content, { centered: true });
   }
 
-  loadPage(page: number) {
-    this.rest.index('books', {page: page}).subscribe(body => {
+  loadPage(params: any = {}) {
+    params['page'] = this.pagination.page_no
+    params['per'] = this.pagination.page_size
+    this.rest.index('books', params).subscribe(body => {
       this.books = body.data;
-      this.pagination = body.pagination;
+      this.pagination = body.pagination || this.pagination;
     });
   }
 

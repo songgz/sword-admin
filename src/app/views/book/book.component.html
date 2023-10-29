@@ -1,5 +1,5 @@
 <!-- Start Breadcrumbs -->
-<app-breadcrumbs title="教材" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<app-breadcrumbs title="课本" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
 <!-- End Breadcrumbs -->
 
 <div class="row">
@@ -9,14 +9,14 @@
         <div class="row g-4 align-items-center">
           <div class="col-sm">
             <div>
-              <h5 class="card-title mb-0">教材列表</h5>
+              <h5 class="card-title mb-0">课本列表</h5>
             </div>
           </div>
           <div class="col-sm-auto">
             <div class="d-flex flex-wrap align-items-start gap-2">
               <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal" (click)="openModal(content)">
                 <i class="ri-add-line align-bottom me-1"></i>
-                Add Customer
+                添加
               </button>
             </div>
           </div>
@@ -32,24 +32,7 @@
           </div>
           <!--end col-->
           <div class="col-xl-6">
-            <div class="row g-3">
-              <div class="col-sm-4">
 
-              </div>
-              <!--end col-->
-              <div class="col-sm-4">
-
-              </div>
-              <!--end col-->
-
-              <div class="col-sm-4">
-                <div>
-                  <button type="button" class="btn btn-primary w-100"><i
-                    class="ri-equalizer-fill mx-2 align-bottom"></i>Filters</button>
-                </div>
-              </div>
-              <!--end col-->
-            </div>
           </div>
         </div>
         <!--end row-->
@@ -106,8 +89,13 @@
             <!-- Pagination -->
             <div class="col col-sm-5">
               <div class="text-sm-right float-sm-end listjs-pagination">
-                <ngb-pagination [collectionSize]="pagination.total_count" [(page)]="pagination.page_no"
-                                [pageSize]="pagination.page_size" (pageChange)="loadPage(pagination.page_no)" >
+                <ngb-pagination  [collectionSize]="pagination.total_count"
+                                 [(page)]="pagination.page_no"
+                                 [maxSize]="5"
+                                 [rotate]="true"
+                                 [boundaryLinks]="true"
+                                 [pageSize]="pagination.page_size"
+                                (pageChange)="loadPage()" >
                 </ngb-pagination>
               </div>
             </div>
@@ -142,7 +130,7 @@
       <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
                 (click)="modal.close('Close click')">关闭</button>
-        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)"
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(modelId)"
                 (click)="modal.close('Close click')">确定，删除！</button>
       </div>
     </div>

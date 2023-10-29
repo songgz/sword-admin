@@ -67,6 +67,7 @@
                     <li class="list-inline-item edit" ngbTooltip="Call" placement="top">
                       <a href="javascript:void(0);" class="text-muted d-inline-block">
                         <i class="ri-phone-line fs-16"></i>
+                        充值
                       </a>
                     </li>
                     <li class="list-inline-item edit" ngbTooltip="Message" placement="top">
@@ -88,16 +89,15 @@
                             View</a></li>
                           <li><a class="dropdown-item edit-item-btn" href="javascript:void(0);"
                                  data-bs-toggle="modal"
-                                 (click)="editModal(model.id, formTpl)"><i
-                            class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>
+                                 (click)="editModal(model.id, formTpl)">
+                            <i class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>
                             修改</a></li>
                           <li>
                             <a class="dropdown-item remove-item-btn" href="javascript:void(0);"
                                data-bs-toggle="modal"
                                (click)="confirmModal(deleteTpl,model.id)">
-                              <i
-                                class="ri-delete-bin-fill align-bottom me-2 text-muted float-start"></i>
-                              Delete
+                              <i class="ri-delete-bin-fill align-bottom me-2 text-muted float-start"></i>
+                              删除
                             </a>
                           </li>
                         </ul>

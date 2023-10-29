@@ -15,6 +15,14 @@ export const routes: Routes = [
         loadComponent: () => import('./views/book/book.component').then((mod) => mod.BookComponent)
       },
       {
+        path: 'units',
+        loadComponent: () => import('./views/unit/unit.component').then((mod) => mod.UnitComponent)
+      },
+      {
+        path: 'words',
+        loadComponent: () => import('./views/word/word.component').then((mod) => mod.WordComponent)
+      },
+      {
         path: 'teachers',
         loadComponent: () => import('./views/teacher/teacher.component').then((mod) => mod.TeacherComponent)
       },

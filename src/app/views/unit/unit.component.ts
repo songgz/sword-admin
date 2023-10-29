@@ -1,43 +1,38 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {BreadcrumbsComponent} from "../../shared/breadcrumbs/breadcrumbs.component";
-import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {NgbModal, NgbPagination, NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {RestApiService} from "../../core/services/rest-api.service";
+import {NgbModal, NgbPaginationConfig, NgbPaginationModule} from "@ng-bootstrap/ng-bootstrap";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
+import {BreadcrumbsComponent} from "../../shared/breadcrumbs/breadcrumbs.component";
 
 @Component({
-  selector: 'app-card',
+  selector: 'app-unit',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule],
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  imports: [CommonModule, BreadcrumbsComponent, ReactiveFormsModule, NgbPaginationModule],
+  templateUrl: './unit.component.html',
+  styleUrls: ['./unit.component.scss'],
+
 })
-export class CardComponent implements OnInit {
+export class UnitComponent implements OnInit {
   breadCrumbItems: any[] = [];
-  pagination = {page_no: 1, page_size: 0, total_count: 0};
+  pagination = {page_no: 1, page_size: 20, total_count: 0, page_count: 0};
   models: any[] = [];
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
-  schools: any[] = [];
 
-  constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
+  constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder) {
     defineElement(lottie.loadAnimation);
-  }
 
-  loadSchools() {
-    this.rest.index('schools').subscribe(body => {
-      this.schools = body.data;
-    });
   }
 
   ngOnInit(): void {
     this.breadCrumbItems = [
-      { label: '销售' },
-      { label: '充值卡管理', active: true }
+      { label: '教材' },
+      { label: '单元管理', active: true }
     ];
 
     this.gForm = this.formBuilder.group({
@@ -52,9 +47,7 @@ export class CardComponent implements OnInit {
     ).subscribe(key => {
       this.loadPage({key: key});
     });
-
     this.loadPage();
-    this.loadSchools();
   }
 
   search(event: Event) {
@@ -67,7 +60,8 @@ export class CardComponent implements OnInit {
 
   loadPage(params: any = {}) {
     params['page'] = this.pagination.page_no
-    this.rest.index('cards', params).subscribe(body => {
+    params['per'] = this.pagination.page_size
+    this.rest.index('units', params).subscribe(body => {
       this.models = body.data;
       this.pagination = body.pagination || this.pagination;
     });
