@@ -7,12 +7,13 @@ import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {RestApiService} from "../../core/services/rest-api.service";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
+import {MultijsDirective} from "../../shared/multijs.directive";
 
 @Component({
   selector: 'app-teacher',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, NgbPagination, NgbTooltip, ReactiveFormsModule],
+  imports: [CommonModule, BreadcrumbsComponent, NgbPagination, NgbTooltip, ReactiveFormsModule, MultijsDirective],
   templateUrl: './teacher.component.html',
   styleUrls: ['./teacher.component.scss']
 })
@@ -23,6 +24,8 @@ export class TeacherComponent implements OnInit {
   modelId = "";
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
+  students :any[] = [];
+  all_students :any[] = [];
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
@@ -52,6 +55,16 @@ export class TeacherComponent implements OnInit {
     });
   }
 
+  getStudents(teacher_id: string) {
+    this.rest.index("students").subscribe(res => {
+      this.all_students = res.data;
+    });
+    this.rest.index("students", {teacher_id: teacher_id}).subscribe(res => {
+      this.students = res.data;
+    });
+  }
+
+
   search(event: Event) {
     this.searchUpdated.next((event.target as HTMLInputElement).value);
   }
@@ -71,6 +84,11 @@ export class TeacherComponent implements OnInit {
   confirmModal(content: any, id: any) {
     this.modelId = id;
     this.modal.open(content, { centered: true });
+  }
+
+  assignDialog(content: any, teacher_id: string) {
+    this.getStudents(teacher_id);
+    this.modal.open(content, { size: 'md', centered: true });
   }
 
   openModal(content: any) {

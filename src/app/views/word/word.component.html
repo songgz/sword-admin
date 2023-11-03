@@ -1,1 +1,242 @@
-<p>word works!</p>
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="单词管理" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom-dashed">
+        <div class="row g-4 align-items-center">
+          <div class="col-sm">
+            <div>
+              <h5 class="card-title mb-0">单词列表</h5>
+            </div>
+          </div>
+          <div class="col-sm-auto">
+            <div class="d-flex flex-wrap align-items-start gap-2">
+              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openModal(formTpl)">
+                <i class="ri-add-line align-bottom me-1"></i>添加
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body border-bottom-dashed border-bottom">
+        <div class="row g-3">
+          <div class="col-xl-6">
+            <div class="search-box">
+              <input type="text" name="searchTerm" [(ngModel)]="state.key" (input)="search($event)" class="form-control" placeholder="单词，词义">
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
+          <!--end col-->
+          <div class="col-xl-6">
+            <div class="row g-3">
+              <!--end col-->
+              <div class="col-sm-4">
+                <div>
+                  <select class="form-select" data-plugin="choices" data-choices
+                          data-choices-search-false name="choices-single-default" id="idStatus"
+                          [(ngModel)]="state.book_category">
+                    <option value="">全部</option>
+                    <option value="ENGLISH_WORD">单词速记</option>
+                    <option value="KNOWLEDGE">知识速记</option>
+                    <option value="CHINESE_WORD">汉字速记</option>
+                  </select>
+                </div>
+              </div>
+              <!--end col-->
+
+              <div class="col-sm-4">
+                <div>
+                  <button type="button" (click)="search($event)" class="btn btn-primary w-100">
+                    <i class="ri-equalizer-fill mx-2 align-bottom"></i>搜索
+                  </button>
+                </div>
+              </div>
+              <!--end col-->
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="table-responsive table-card mb-1">
+            <table class="table">
+              <thead class="table-light text-muted">
+              <tr>
+                <th>单词</th>
+                <th>词义</th>
+                <th>分类</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let model of models">
+                <td>{{model.word}}</td>
+                <td>{{model.acceptation}}</td>
+                <td>{{model.book_category}}</td>
+                <td>{{model.status}}</td>
+                <td>
+                  <div class="dropdown" ngbDropdown>
+                    <button class="btn btn-soft-secondary btn-sm dropdown arrow-none"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            ngbDropdownToggle>
+                      <i class="ri-more-fill align-middle"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                      <li><a class="dropdown-item" href="javascript:void(0);"
+                             (click)="openModal(formTpl)">
+                        <i class="ri-eye-fill align-bottom me-2 text-muted"></i>View</a>
+                      </li>
+                      <li><a class="dropdown-item edit-item-btn" href="javascript:void(0);"
+                             data-bs-toggle="modal" (click)="editDialog(model.id)">
+                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>修改</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item remove-item-btn" href="javascript:void(0);"
+                           data-bs-toggle="modal" (click)="delConfirmDialog(modelId)">
+                          <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>删除</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row justify-content-md-between align-items-md-center">
+            <div class="col col-sm-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+                {{pagination.page_size * (pagination.page_no - 1)}} to
+                {{pagination.page_size * pagination.page_no}} of {{pagination.total_count}}
+                entries
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col col-sm-5">
+              <div class="text-sm-right float-sm-end listjs-pagination">
+                <ngb-pagination
+                  [collectionSize]="pagination.total_count"
+                  [(page)]="pagination.page_no"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  [pageSize]="pagination.page_size"
+                  (pageChange)="loadPage()" >
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->
+
+
+
+
+
+
+<ng-template #formTpl role="document" let-modal>
+  <div class="modal-header bg-info-subtle p-3">
+    <h5 class="modal-title" class="tablelist-form" autocomplete="off" id="exampleModalLabel">添加  单词</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form (ngSubmit)="genCard()" [formGroup]="gForm">
+    <div class="modal-body">
+      <input type="hidden" id="id-field" />
+      <div class="row g-3">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <div class="position-relative d-inline-block">
+              <div class="position-absolute bottom-0 end-0">
+                <label for="company-logo-input" class="mb-0" data-bs-toggle="tooltip"
+                       data-bs-placement="right" title="Select Image">
+                  <div class="avatar-xs cursor-pointer">
+                    <div class="avatar-title bg-light border rounded-circle text-muted">
+                      <i class="ri-image-fill"></i>
+                    </div>
+                  </div>
+                </label>
+                <input class="form-control d-none" id="company-logo-input" type="file" formControlName="phonetic_symbol"
+                       accept="image/png, image/gif, image/jpeg"
+                       (change)="fileChange($event)">
+              </div>
+              <div class="avatar-lg p-1">
+                <div class="avatar-title bg-light rounded-circle">
+                  <img src="{{env.wordUrl + gForm.get('picture')?.value}}" id="companylogo-img"
+                       class="avatar-md rounded-circle object-fit-cover" />
+                </div>
+              </div>
+            </div>
+            <h5 class="fs-13 mt-3">图示</h5>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div>
+            <label for="word-field" class="form-label">单词</label>
+            <input type="text" id="word-field" class="form-control"
+                   placeholder="word" required formControlName="word"
+                   [ngClass]="{ 'is-invalid': form['word'].errors }" />
+            <div *ngIf="form['word'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['word'].errors?.['required']">单词是必填项</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div>
+            <label for="phonetic_symbol-field" class="form-label">音标</label>
+            <input type="text" id="phonetic_symbol-field" class="form-control"
+                   placeholder="phonetic symbol" formControlName="phonetic_symbol"/>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div>
+            <label for="usage-field" class="form-label">用法</label>
+            <textarea type="text" id="usage-field" class="form-control"
+                      placeholder="usage" formControlName="usage">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div>
+            <label for="parse-field" class="form-label">解析</label>
+            <textarea type="text" id="parse-field" class="form-control"
+                      placeholder="parse" formControlName="parse" rows="5">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div>
+            <label for="example-field" class="form-label">例句</label>
+            <textarea type="text" id="example-field" class="form-control"
+                   placeholder="example" formControlName="example" rows="5">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">关闭</button>
+        <button type="submit" class="btn btn-success">提交</button>
+      </div>
+    </div>
+  </form>
+</ng-template>

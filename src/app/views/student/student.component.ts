@@ -32,6 +32,7 @@ export class StudentComponent implements OnInit {
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
 
+
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
     this.loadPage();
@@ -75,9 +76,13 @@ export class StudentComponent implements OnInit {
     });
   }
 
-  confirmModal(content: any, id: any) {
+  delConfirmDialog(id: any, content?: any) {
     this.modelId = id;
     this.modal.open(content, { centered: true });
+  }
+
+  editDialog(content: any, id: any) {
+
   }
 
   openModal(content: any) {
