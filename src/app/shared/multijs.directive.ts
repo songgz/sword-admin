@@ -22,13 +22,13 @@ export class MultijsDirective implements OnInit {
 
     let non_selected = this.non_selected = this.renderer.createElement('div');
     this.renderer.addClass(this.non_selected, "non-selected-wrapper");
-    const text1 = this.renderer.createText('未指派');
+    const text1 = this.renderer.createText('未分配');
     const non_head = this.renderer.createElement('div');
     this.renderer.appendChild(non_head, text1);
     this.renderer.addClass(non_head, "header");
     this.selected = this.renderer.createElement('div');
     this.renderer.addClass(this.selected, "selected-wrapper");
-    const text2 = this.renderer.createText('已指派');
+    const text2 = this.renderer.createText('已分配');
     const head = this.renderer.createElement('div');
     this.renderer.appendChild(head, text2);
     this.renderer.addClass(head, "header");
@@ -41,19 +41,13 @@ export class MultijsDirective implements OnInit {
     this.renderer.appendChild(wrapper, this.selected);
     this.renderer.appendChild(this.el.nativeElement.parentElement, wrapper);
     this.renderer.listen(search, 'input', event => {
-      console.log(event.data);
       non_selected.innerHTML = '';
-
       for(let o of this.el.nativeElement.options) {
-        console.log(o.text);
-        console.log(o.text.toString().includes(event.data.toString()));
-        if (event.data.search(o.text))  {
+        if (event.data === null || o.text.toString().includes(event.data.toString()))  {
           let a = this.createA(o);
           this.renderer.appendChild(non_selected, a);
         }
-
       }
-
     });
   }
 
@@ -61,22 +55,26 @@ export class MultijsDirective implements OnInit {
     let options = this.el.nativeElement.options;
     console.log(options.length);
     if (options.length !== this.pre_len) {
-      this.pre_len = options.length;
-      for (let option of options) {
-        let a = this.createA(option);
-        if (option.hasAttribute("selected")) {
-          this.renderer.appendChild(this.selected, a);
-        } else {
-          this.renderer.appendChild(this.non_selected, a);
+      for (let o of options) {
+        let a = this.createA(o);
+        this.renderer.appendChild(this.non_selected, a);
+
+        if (o.hasAttribute("selected")) {
+          let a1 = this.createA(o);
+          this.renderer.appendChild(this.selected, a1);
         }
       }
     }
+    this.pre_len = options.length;
   }
 
   createA(option: any) {
     let a = this.renderer.createElement('a');
     this.renderer.addClass(a, "item");
-    this.renderer.setAttribute(a, "data-value", option.text);
+    if (option.hasAttribute("selected")) {
+      this.renderer.addClass(a, "selected");
+    }
+    this.renderer.setAttribute(a, "data-value", option.value);
     let t = this.renderer.createText(option.text);
     this.renderer.appendChild(a, t);
     this.renderer.listen(a, 'click', event => {
@@ -87,19 +85,24 @@ export class MultijsDirective implements OnInit {
   }
 
   move(a: any) {
-    for (let o of this.el.nativeElement.options) {
-      if (o.text == a.text) {
-        if (o.hasAttribute("selected")) {
-          this.renderer.removeChild(this.selected, a);
-          this.renderer.appendChild(this.non_selected, a);
-          this.renderer.removeAttribute(o, "selected");
-        } else {
-          this.renderer.removeChild(this.non_selected, a);
-          this.renderer.appendChild(this.selected, a);
-          this.renderer.setAttribute(o, "selected", "");
-        }
+    let option = this.el.nativeElement.querySelectorAll("option[value='" +a.getAttribute("data-value")+ "']")[0];
+    let n = this.el.nativeElement.parentElement.querySelector('.non-selected-wrapper').querySelectorAll("a[data-value='"+a.getAttribute("data-value")+"']")[0];
+
+    if (option.hasAttribute("selected")) {
+      this.renderer.removeAttribute(option, "selected");
+      let s = this.el.nativeElement.parentElement.querySelector('.selected-wrapper').querySelectorAll("a[data-value='"+a.getAttribute("data-value")+"']")[0];
+      this.renderer.removeChild(this.selected, s);
+      if(n){
+        this.renderer.removeClass(n, "selected");
       }
+
+    }else{
+      this.renderer.setAttribute(option, "selected", "");
+      this.renderer.addClass(n, "selected");
+      let a1 = this.createA(option);
+      this.renderer.appendChild(this.selected, a1);
     }
+
   }
 
 
