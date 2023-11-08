@@ -15,12 +15,13 @@ import {RestApiService} from "../../core/services/rest-api.service";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {MultijsDirective} from "../../shared/multijs.directive";
 
 @Component({
   selector: 'app-student',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule],
+  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule, MultijsDirective],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
@@ -31,6 +32,8 @@ export class StudentComponent implements OnInit {
   modelId = "";
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
+  allBooks: any[] = [];
+  studentBooks: any[] = [];
 
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
@@ -66,6 +69,12 @@ export class StudentComponent implements OnInit {
 
   get form() {
     return this.gForm.controls;
+  }
+
+  loadBooks() {
+    this.rest.index('books').subscribe(res => {
+      this.allBooks = res.data;
+    });
   }
 
   loadPage(params: any = {}) {
@@ -180,5 +189,10 @@ export class StudentComponent implements OnInit {
       console.log(body);
       this.modal.dismissAll();
     });
+  }
+
+  assignBookDialog(content: any, student_id: string) {
+    this.loadBooks();
+    this.modal.open(content, { size: 'md', centered: true });
   }
 }

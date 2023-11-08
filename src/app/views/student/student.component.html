@@ -64,48 +64,43 @@
                 <td>{{model.avatar}}</td>
                 <td>
                   <ul class="list-inline hstack gap-2 mb-0">
-                    <li class="list-inline-item edit" ngbTooltip="Call" placement="top">
+                    <li class="list-inline-item edit" ngbTooltip="充值" placement="top">
                       <a href="javascript:void(0);" class="text-muted d-inline-block">
-                        <i class="ri-phone-line fs-16"></i>
-                        充值
+                        <i class="ri-money-cny-circle-fill fs-16"></i>
                       </a>
                     </li>
-                    <li class="list-inline-item edit" ngbTooltip="Message" placement="top">
-                      <a href="javascript:void(0);" class="text-muted d-inline-block">
-                        <i class="ri-question-answer-line fs-16"></i>
+                    <li class="list-inline-item edit" ngbTooltip="分配课本" placement="top">
+                      <a href="javascript:void(0);" (click)="assignBookDialog(formTpl1, model.id)" class="text-muted d-inline-block">
+                        <i class="ri-book-2-fill fs-16"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
                       <div class="dropdown" ngbDropdown>
                         <button class="btn btn-soft-secondary btn-sm dropdown arrow-none"
-                                type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                ngbDropdownToggle>
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false" ngbDropdownToggle>
                           <i class="ri-more-fill align-middle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                          <li><a class="dropdown-item" href="javascript:void(0);"
-                                 (click)="editModal(model.id, formTpl)"><i
-                            class="ri-eye-fill align-bottom me-2 text-muted float-start"></i>
-                            View</a></li>
-                          <li><a class="dropdown-item edit-item-btn" href="javascript:void(0);"
-                                 data-bs-toggle="modal"
-                                 (click)="editModal(model.id, formTpl)">
-                            <i class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>
-                            修改</a></li>
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);" (click)="editModal(model.id, formTpl)">
+                              <i class=" ri-lock-unlock-fill align-bottom me-2 text-muted float-start"></i>密码重置
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item edit-item-btn" href="javascript:void(0);"
+                                 data-bs-toggle="modal" (click)="editModal(model.id, formTpl)">
+                              <i class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>修改
+                            </a>
+                          </li>
                           <li>
                             <a class="dropdown-item remove-item-btn" href="javascript:void(0);"
-                               data-bs-toggle="modal"
-                               (click)="delConfirmDialog(model.id)">
-                              <i class="ri-delete-bin-fill align-bottom me-2 text-muted float-start"></i>
-                              删除
+                               data-bs-toggle="modal" (click)="delConfirmDialog(model.id)">
+                              <i class="ri-delete-bin-fill align-bottom me-2 text-muted float-start"></i>删除
                             </a>
                           </li>
                         </ul>
                       </div>
                     </li>
-                  </ul>
-                  <ul class="list-inline hstack gap-2 mb-0">
-
                   </ul>
                 </td>
               </tr>
@@ -311,4 +306,27 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #formTpl1 role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title">分派学生</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form (ngSubmit)="save()" [formGroup]="gForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+      <select appMultijs required="" multiple="multiple" name="favorite_cars" id="multiselect-header" data-multijs="true" style="display: none;">
+        <option *ngFor="let o of allBooks" [selected]="books.includes(o)" value="{{o.id}}">{{o.name}}</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">关闭</button>
+        <button type="submit" class="btn btn-success">提交</button>
+      </div>
+    </div>
+  </form>
 </ng-template>

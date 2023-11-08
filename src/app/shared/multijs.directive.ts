@@ -19,6 +19,7 @@ export class MultijsDirective implements OnInit {
   ngOnInit() {
     const search = this.renderer.createElement('input');
     this.renderer.addClass(search, "search-input");
+    this.renderer.setAttribute(search, "placeholder", "搜索...");
 
     let non_selected = this.non_selected = this.renderer.createElement('div');
     this.renderer.addClass(this.non_selected, "non-selected-wrapper");

@@ -60,10 +60,10 @@
                 <td>{{model.email}}</td>
                 <td>
                   <ul class="list-inline hstack gap-2 mb-0">
-                    <li class="list-inline-item edit" ngbTooltip="指派" placement="top">
+                    <li class="list-inline-item edit" ngbTooltip="分配学生" placement="top">
                       <a href="javascript:void(0);" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn"
                          (click)="assignDialog(formTpl1, model.id)">
-                        <i class="ri-pencil-fill fs-16"></i>
+                        <i class="ri-user-shared-fill fs-16"></i>
                       </a>
                     </li>
                     <li class="list-inline-item edit" ngbTooltip="编辑" placement="top">
@@ -212,13 +212,9 @@
   </div>
   <form (ngSubmit)="save()" [formGroup]="gForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-
         <select appMultijs required="" multiple="multiple" name="favorite_cars" id="multiselect-header" data-multijs="true" style="display: none;">
           <option *ngFor="let o of all_students" [selected]="students.includes(o)"  value="{{o.id}}">{{o.name}}</option>
-
         </select>
-
-
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
