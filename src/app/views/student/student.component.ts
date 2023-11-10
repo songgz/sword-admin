@@ -16,12 +16,13 @@ import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {MultijsDirective} from "../../shared/multijs.directive";
+import {MutijsSelectComponent} from "../../shared/mutijs-select/mutijs-select.component";
 
 @Component({
   selector: 'app-student',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule, MultijsDirective],
+  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule, MultijsDirective, MutijsSelectComponent],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
@@ -32,8 +33,11 @@ export class StudentComponent implements OnInit {
   modelId = "";
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
+  assignBookForm!: UntypedFormGroup;
   allBooks: any[] = [];
-  studentBooks: any[] = [];
+  learnableBooks: any[] = [];
+  lbooks: any = "651096176eec2f38fc25d93f,65109c936eec2f38fc2610d5";
+  allTechnologies: any[] = [{id: 'aa', techName: 'aa'}, {id: 'bb', techName: 'bb'}];
 
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
@@ -55,6 +59,11 @@ export class StudentComponent implements OnInit {
       phone: ['']
     });
 
+    this.assignBookForm = this.formBuilder.group({
+      student_id: ['', [Validators.required]],
+      book_ids: [[], [Validators.required]]
+    });
+
     this.searchUpdated.pipe(
       debounceTime(500),
       distinctUntilChanged()
@@ -71,9 +80,15 @@ export class StudentComponent implements OnInit {
     return this.gForm.controls;
   }
 
-  loadBooks() {
+  loadAllBooks() {
     this.rest.index('books').subscribe(res => {
       this.allBooks = res.data;
+    });
+  }
+
+  loadLearnableBook(student_id: string) {
+    this.rest.index('learnable_books', {student_id: student_id}).subscribe(res => {
+      this.learnableBooks = res.data;
     });
   }
 
@@ -148,6 +163,28 @@ export class StudentComponent implements OnInit {
     }
   }
 
+  saveLearnableBook() {
+    console.log(this.lbooks);
+    console.log(this.learnableBooks);
+    console.log(this.assignBookForm.value);
+    console.log(this.assignBookForm.status);
+    if (this.assignBookForm.valid) {
+
+
+      let id = this.assignBookForm.get('id')?.value;
+      if (id !== null) {
+        this.rest.update('learnable_books/' + id, this.assignBookForm.value).subscribe(res => {
+          this.modal.dismissAll();
+        });
+      }else{
+        this.rest.create('learnable_books', this.assignBookForm.value).subscribe(res => {
+          this.modal.dismissAll();
+        });
+      }
+    }
+
+  }
+
   // Default
   counter = 1;
   increment() {
@@ -192,7 +229,9 @@ export class StudentComponent implements OnInit {
   }
 
   assignBookDialog(content: any, student_id: string) {
-    this.loadBooks();
+    this.loadAllBooks();
+    this.loadLearnableBook(student_id);
+    this.assignBookForm.controls['student_id'].setValue(student_id);
     this.modal.open(content, { size: 'md', centered: true });
   }
 }

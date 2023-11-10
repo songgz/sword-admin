@@ -85,13 +85,19 @@ export class MultijsDirective implements OnInit {
     return a
   }
 
+  trigger_event(type: any, el: Element) {
+    const event = new Event(type);
+    let e = document.createEvent("HTMLEvents");
+    e.initEvent(type, false, true);
+    el.dispatchEvent(e);
+  };
   move(a: any) {
-    let option = this.el.nativeElement.querySelectorAll("option[value='" +a.getAttribute("data-value")+ "']")[0];
-    let n = this.el.nativeElement.parentElement.querySelector('.non-selected-wrapper').querySelectorAll("a[data-value='"+a.getAttribute("data-value")+"']")[0];
+    let option = this.el.nativeElement.querySelectorAll("option[value=\"" +a.getAttribute("data-value")+ "\"]")[0];
+    let n = this.el.nativeElement.parentElement.querySelector('.non-selected-wrapper').querySelectorAll("a[data-value=\""+a.getAttribute("data-value")+"\"]")[0];
 
     if (option.hasAttribute("selected")) {
       this.renderer.removeAttribute(option, "selected");
-      let s = this.el.nativeElement.parentElement.querySelector('.selected-wrapper').querySelectorAll("a[data-value='"+a.getAttribute("data-value")+"']")[0];
+      let s = this.el.nativeElement.parentElement.querySelector('.selected-wrapper').querySelectorAll("a[data-value=\""+a.getAttribute("data-value")+"\"]")[0];
       this.renderer.removeChild(this.selected, s);
       if(n){
         this.renderer.removeClass(n, "selected");
@@ -103,6 +109,10 @@ export class MultijsDirective implements OnInit {
       let a1 = this.createA(option);
       this.renderer.appendChild(this.selected, a1);
     }
+    const event = new Event("change");
+    this.el.nativeElement.dispatchEvent(event);
+
+    console.log(this.el.nativeElement.value);
 
   }
 
