@@ -28,21 +28,19 @@ import {MutijsSelectComponent} from "../../shared/mutijs-select/mutijs-select.co
 })
 export class StudentComponent implements OnInit {
   breadCrumbItems: any[] = [];
-  pagination = {page_no: 1, page_size: 0, total_count: 0};
+  pagination = {page_no: 1, page_size: 20, total_count: 0};
   models: any[] = [];
   modelId = "";
   gForm!: UntypedFormGroup;
-  private searchUpdated: Subject<string> = new Subject();
-  assignBookForm!: UntypedFormGroup;
+  private searchSubject: Subject<any> = new Subject();
+  learnableBookForm!: UntypedFormGroup;
   allBooks: any[] = [];
-  learnableBooks: any[] = [];
-  lbooks: any = "651096176eec2f38fc25d93f,65109c936eec2f38fc2610d5";
-  allTechnologies: any[] = [{id: 'aa', techName: 'aa'}, {id: 'bb', techName: 'bb'}];
+  state: any = {key: ""};
+
 
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
-    this.loadPage();
   }
 
   ngOnInit(): void {
@@ -59,21 +57,24 @@ export class StudentComponent implements OnInit {
       phone: ['']
     });
 
-    this.assignBookForm = this.formBuilder.group({
+    this.learnableBookForm = this.formBuilder.group({
       student_id: ['', [Validators.required]],
       book_ids: [[], [Validators.required]]
     });
 
-    this.searchUpdated.pipe(
+    this.searchSubject.pipe(
       debounceTime(500),
-      distinctUntilChanged()
-    ).subscribe(key => {
-      this.loadPage({key: key});
+      //distinctUntilChanged()
+    ).subscribe(params => {
+      this.loadPage();
     });
+
+    this.loadPage();
   }
 
   search(event: Event) {
-    this.searchUpdated.next((event.target as HTMLInputElement).value);
+    this.pagination.page_no = 1;
+    this.searchSubject.next(this.state);
   }
 
   get form() {
@@ -81,20 +82,21 @@ export class StudentComponent implements OnInit {
   }
 
   loadAllBooks() {
-    this.rest.index('books').subscribe(res => {
+    this.rest.index('books',{per: 1000}).subscribe(res => {
       this.allBooks = res.data;
     });
   }
 
   loadLearnableBook(student_id: string) {
-    this.rest.index('learnable_books', {student_id: student_id}).subscribe(res => {
-      this.learnableBooks = res.data;
+    this.rest.index('learnable_books', {student_id: student_id,per: 1000}).subscribe(res => {
+      this.learnableBookForm.controls['book_ids'].setValue(res.data[0]?.book_ids || []);
     });
   }
 
-  loadPage(params: any = {}) {
-    params['page'] = this.pagination.page_no
-    this.rest.index('students', params).subscribe(body => {
+  loadPage(params?: any) {
+    this.state['page'] = this.pagination.page_no;
+    this.state['per'] = this.pagination.page_size;
+    this.rest.index('students', this.state).subscribe(body => {
       this.models = body.data;
       this.pagination = body.pagination || this.pagination;
     });
@@ -164,25 +166,13 @@ export class StudentComponent implements OnInit {
   }
 
   saveLearnableBook() {
-    console.log(this.lbooks);
-    console.log(this.learnableBooks);
-    console.log(this.assignBookForm.value);
-    console.log(this.assignBookForm.status);
-    if (this.assignBookForm.valid) {
-
-
-      let id = this.assignBookForm.get('id')?.value;
-      if (id !== null) {
-        this.rest.update('learnable_books/' + id, this.assignBookForm.value).subscribe(res => {
+    console.log(this.learnableBookForm.value);
+    console.log(this.learnableBookForm.status);
+    if (this.learnableBookForm.valid) {
+        this.rest.create('learnable_books', this.learnableBookForm.value).subscribe(res => {
           this.modal.dismissAll();
         });
-      }else{
-        this.rest.create('learnable_books', this.assignBookForm.value).subscribe(res => {
-          this.modal.dismissAll();
-        });
-      }
     }
-
   }
 
   // Default
@@ -231,7 +221,21 @@ export class StudentComponent implements OnInit {
   assignBookDialog(content: any, student_id: string) {
     this.loadAllBooks();
     this.loadLearnableBook(student_id);
-    this.assignBookForm.controls['student_id'].setValue(student_id);
+    this.learnableBookForm.controls['student_id'].setValue(student_id);
+
     this.modal.open(content, { size: 'md', centered: true });
   }
+
+  bookKinds: any[] = [
+    {id:'PRIMARY',name:'PRIMARY'},
+    {id:'HIGH',name:'HIGH'},
+    {id:'COLLEGE',name:'COLLEGE'},
+    {id:'MIDDLE',name:'MIDDLE'},
+    {id:'FREE',name:'FREE'},
+    {id:'BABY',name:'BABY'},
+    {id:'COMMON',name:'COMMON'},
+    {id:'GO_ABROAD',name:'GO_ABROAD'}
+  ];
+
+
 }

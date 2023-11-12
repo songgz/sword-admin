@@ -1,0 +1,18 @@
+<div class="multi-wrapper">
+  <input class="search-input" type="text" (input)="search($event)" placeholder="Search..." title="Search...">
+  <div class="non-selected-wrapper">
+    <div class="header">未分配</div>
+    <ng-template [ngIf]="_groups.length > 0" ngFor let-group [ngForOf]="_groups" let-i="index">
+      <span class="group-label" role="button" (click)="move_group(group.id)">{{group.name}}</span>
+      <a class="item" role="button" *ngFor="let item of findItems(group.id)" (click)="forward_move(item.id)" [ngClass]="hasSelectedItems(item.id) ? 'selected' : ''" >{{item.name}}</a>
+    </ng-template>
+    <ng-template [ngIf]="_groups.length === 0">
+      <a class="item" role="button" *ngFor="let item of findItems()" (click)="forward_move(item.id)" [ngClass]="hasSelectedItems(item.id) ? 'selected' : ''" >{{item.name}}</a>
+    </ng-template>
+
+  </div>
+  <div class="selected-wrapper">
+    <div class="header">已分配</div>
+    <a class="item selected" role="button" *ngFor="let selectedItem of selectedItems" (click)="reverse_move(selectedItem.id)">{{selectedItem.name}}</a>
+  </div>
+</div>

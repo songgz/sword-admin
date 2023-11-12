@@ -8,12 +8,13 @@ import {RestApiService} from "../../core/services/rest-api.service";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
 import {MultijsDirective} from "../../shared/multijs.directive";
+import {MutijsSelectComponent} from "../../shared/mutijs-select/mutijs-select.component";
 
 @Component({
   selector: 'app-teacher',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, NgbPagination, NgbTooltip, ReactiveFormsModule, MultijsDirective],
+  imports: [CommonModule, BreadcrumbsComponent, NgbPagination, NgbTooltip, ReactiveFormsModule, MultijsDirective, MutijsSelectComponent],
   templateUrl: './teacher.component.html',
   styleUrls: ['./teacher.component.scss']
 })
@@ -26,6 +27,7 @@ export class TeacherComponent implements OnInit {
   private searchUpdated: Subject<string> = new Subject();
   students :any[] = [];
   all_students :any[] = [];
+  supervisedStudentForm!: UntypedFormGroup;
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
@@ -53,14 +55,21 @@ export class TeacherComponent implements OnInit {
     ).subscribe(key => {
       this.loadPage({key: key});
     });
+
+    this.supervisedStudentForm = this.formBuilder.group({
+      teacher_id: [''],
+      student_ids: [[]]
+    });
   }
 
   getStudents(teacher_id: string) {
-    this.rest.index("students").subscribe(res => {
+    this.rest.index("students", {teacher_id: 'nil'}).subscribe(res => {
       this.all_students = res.data;
+      this.all_students = [...this.students, ...this.all_students];
     });
     this.rest.index("students", {teacher_id: teacher_id}).subscribe(res => {
       this.students = res.data;
+      this.supervisedStudentForm.controls['student_ids'].patchValue(this.students.map(i => i.id));
     });
   }
 
@@ -88,6 +97,8 @@ export class TeacherComponent implements OnInit {
 
   assignDialog(content: any, teacher_id: string) {
     this.getStudents(teacher_id);
+    this.supervisedStudentForm.controls['teacher_id'].setValue(teacher_id);
+
     this.modal.open(content, { size: 'md', centered: true });
   }
 
@@ -146,6 +157,16 @@ export class TeacherComponent implements OnInit {
       }
 
     }
+  }
 
+  supervisedStudentSave() {
+    console.log(this.supervisedStudentForm.value);
+    console.log(this.supervisedStudentForm.status);
+    if (this.supervisedStudentForm.valid) {
+      this.rest.post('teachers/supervise', this.supervisedStudentForm.value).subscribe(res => {
+        this.modal.dismissAll();
+      });
+
+    }
   }
 }

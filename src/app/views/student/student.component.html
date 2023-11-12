@@ -30,7 +30,7 @@
         <div class="row g-3">
           <div class="col-xl-6">
             <div class="search-box">
-              <input type="text" name="searchTerm" (input)="search($event)" class="form-control" placeholder="姓名，帐号，电话...">
+              <input type="text" name="searchTerm" [(ngModel)]="state.key" (input)="search($event)" class="form-control" placeholder="姓名，帐号，电话...">
               <i class="ri-search-line search-icon"></i>
             </div>
           </div>
@@ -310,23 +310,19 @@
 
 <ng-template #formTpl1 role="document" let-modal>
   <div class="modal-header bg-light p-3">
-    <h5 class="modal-title">分派课本</h5>
+    <h5 class="modal-title">分配课本</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="modal.dismiss('Cross click')">
     </button>
   </div>
-  <form (ngSubmit)="saveLearnableBook()"  class="tablelist-form" autocomplete="off">
+  <form (ngSubmit)="saveLearnableBook()" [formGroup]="learnableBookForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-
-      <app-mutijs-select name="bids" [items]="allBooks" [selectedItems]="learnableBooks" [(ngModel)]="lbooks"></app-mutijs-select>
-
-      <input type="hidden" name="student_id" value=""  />
-
+      <input type="hidden" name="student_id" formControlName="student_id" value=""  />
+      <app-mutijs-select name="book_ids" [items]="allBooks" [groups]="bookKinds" formControlName="book_ids"></app-mutijs-select>
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                (click)="modal.close('Close click')">关闭</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">关闭</button>
         <button type="submit" class="btn btn-success">提交</button>
       </div>
     </div>
