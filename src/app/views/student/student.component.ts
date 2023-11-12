@@ -17,12 +17,13 @@ import lottie from "lottie-web";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {MultijsDirective} from "../../shared/multijs.directive";
 import {MutijsSelectComponent} from "../../shared/mutijs-select/mutijs-select.component";
+import {SpinInputComponent} from "../../shared/spin-input/spin-input.component";
 
 @Component({
   selector: 'app-student',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule, MultijsDirective, MutijsSelectComponent],
+  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, NgbDropdownToggle, NgbDropdownMenu, NgbDropdown, NgSelectModule, MultijsDirective, MutijsSelectComponent, SpinInputComponent],
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
@@ -107,27 +108,24 @@ export class StudentComponent implements OnInit {
     this.modal.open(content, { centered: true });
   }
 
-  editDialog(content: any, id: any) {
-
-  }
-
-  openModal(content: any) {
-    //this.submitted = false;
+  openDialog(content: any, id?: string) {
     this.modal.open(content, { size: 'md', centered: true });
   }
 
-  editModal(id: any, content: any) {
-    //this.modelId = id;
+  editDialog(content: any, id?: string) {
     this.modal.open(content, { size: 'md', centered: true });
-    let modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = '编辑学生';
 
-    let model = this.models.find(obj => obj.id === id);
-    this.gForm.controls['id'].setValue(model.id);
-    this.gForm.controls['name'].setValue(model.name);
-    this.gForm.controls['grade'].setValue(model?.grade);
-    this.gForm.controls['avatar'].setValue(model?.avatar);
-    this.gForm.controls['phone'].setValue(model?.phone);
+    if (id) {
+      let modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+      modelTitle.innerHTML = '编辑学生';
+
+      let model = this.models.find(obj => obj.id === id);
+      this.gForm.controls['id'].setValue(model.id);
+      this.gForm.controls['name'].setValue(model.name);
+      this.gForm.controls['grade'].setValue(model?.grade);
+      this.gForm.controls['avatar'].setValue(model?.avatar);
+      this.gForm.controls['phone'].setValue(model?.phone);
+    }
   }
 
   destroy(id: any) {
@@ -218,7 +216,7 @@ export class StudentComponent implements OnInit {
     });
   }
 
-  assignBookDialog(content: any, student_id: string) {
+  learnableBooDialog(content: any, student_id: string) {
     this.loadAllBooks();
     this.loadLearnableBook(student_id);
     this.learnableBookForm.controls['student_id'].setValue(student_id);

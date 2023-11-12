@@ -14,11 +14,11 @@
           </div>
           <div class="col-sm-auto">
             <div class="d-flex flex-wrap align-items-start gap-2">
-              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openModal(formTpl)">
+              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="editDialog(formTpl)">
                 <i class="ri-add-line align-bottom me-1"></i>
                 添加
               </button>
-              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="openModal(batchTpl)">
+              <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#showModal" (click)="editDialog(batchTpl)">
                 <i class="ri-add-line align-bottom me-1"></i>
                 批量
               </button>
@@ -65,12 +65,12 @@
                 <td>
                   <ul class="list-inline hstack gap-2 mb-0">
                     <li class="list-inline-item edit" ngbTooltip="充值" placement="top">
-                      <a href="javascript:void(0);" class="text-muted d-inline-block">
+                      <a href="javascript:void(0);" (click)="openDialog(recharge)" class="text-muted d-inline-block">
                         <i class="ri-money-cny-circle-fill fs-16"></i>
                       </a>
                     </li>
                     <li class="list-inline-item edit" ngbTooltip="分配课本" placement="top">
-                      <a href="javascript:void(0);" (click)="assignBookDialog(formTpl1, model.id)" class="text-muted d-inline-block">
+                      <a href="javascript:void(0);" (click)="learnableBooDialog(learnableBookTpl, model.id)" class="text-muted d-inline-block">
                         <i class="ri-book-2-fill fs-16"></i>
                       </a>
                     </li>
@@ -82,19 +82,19 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
                           <li>
-                            <a class="dropdown-item" href="javascript:void(0);" (click)="editModal(model.id, formTpl)">
+                            <a class="dropdown-item" href="javascript:void(0);" (click)="openDialog(password, model.id)">
                               <i class=" ri-lock-unlock-fill align-bottom me-2 text-muted float-start"></i>密码重置
                             </a>
                           </li>
                           <li>
                             <a class="dropdown-item edit-item-btn" href="javascript:void(0);"
-                                 data-bs-toggle="modal" (click)="editModal(model.id, formTpl)">
+                                 data-bs-toggle="modal" (click)="editDialog(formTpl, model.id)">
                               <i class="ri-pencil-fill align-bottom me-2 text-muted float-start"></i>修改
                             </a>
                           </li>
                           <li>
                             <a class="dropdown-item remove-item-btn" href="javascript:void(0);"
-                               data-bs-toggle="modal" (click)="delConfirmDialog(model.id)">
+                               data-bs-toggle="modal" (click)="delConfirmDialog(model.id, deleteTpl)">
                               <i class="ri-delete-bin-fill align-bottom me-2 text-muted float-start"></i>删除
                             </a>
                           </li>
@@ -245,11 +245,7 @@
         <input type="text" name="nn1" [(ngModel)]="priex" value="{{priex}}" class="form-control" placeholder="姓名/前缀">
       </div>
       <div class="col-md-3">
-        <div class="input-step">
-          <button type="button" class="minus" (click)="decrement()">–</button>
-          <input type="number" class="product-quantity" value="{{counter}}" min="1" max="100" readonly>
-          <button type="button" class="plus" (click)="increment()">+</button>
-        </div>
+        <app-spin-input [(ngModel)]="counter"></app-spin-input>{{counter}}
       </div>
       <div class="col-md-4">
         <select class="form-select" [(ngModel)]="grade">
@@ -308,7 +304,7 @@
   </div>
 </ng-template>
 
-<ng-template #formTpl1 role="document" let-modal>
+<ng-template #learnableBookTpl role="document" let-modal>
   <div class="modal-header bg-light p-3">
     <h5 class="modal-title">分配课本</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -319,6 +315,48 @@
     <div class="modal-body">
       <input type="hidden" name="student_id" formControlName="student_id" value=""  />
       <app-mutijs-select name="book_ids" [items]="allBooks" [groups]="bookKinds" formControlName="book_ids"></app-mutijs-select>
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">关闭</button>
+        <button type="submit" class="btn btn-success">提交</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #recharge role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title">充值</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form (ngSubmit)="saveLearnableBook()" [formGroup]="learnableBookForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+      <input type="hidden" name="student_id" formControlName="student_id" value=""  />
+      <input />
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('Close click')">关闭</button>
+        <button type="submit" class="btn btn-success">提交</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #password role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title">重置密码</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <form (ngSubmit)="saveLearnableBook()" [formGroup]="learnableBookForm" class="tablelist-form" autocomplete="off">
+    <div class="modal-body">
+      <input type="hidden" name="student_id" formControlName="student_id" value=""  />
+      <input />
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
