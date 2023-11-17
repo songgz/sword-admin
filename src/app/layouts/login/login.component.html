@@ -55,32 +55,32 @@
               <div class="col-lg-6">
                 <div class="p-lg-5 p-4">
                   <div>
-                    <h5 class="text-primary">Welcome Back !</h5>
-                    <p class="text-muted">Sign in to continue to Velzon.</p>
+                    <h5 class="text-primary">欢迎回来！</h5>
+                    <p class="text-muted">马上登录，继续学习。</p>
                   </div>
 
                   <div class="mt-4">
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
                       <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter username" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
-                        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback" align="left">
-                          <div *ngIf="f['name'].errors?.['required']">Username is required</div>
+                        <label for="username" class="form-label">帐号</label>
+                        <input type="text" class="form-control" id="username" placeholder="填入用户帐号" formControlName="username" [ngClass]="{ 'is-invalid': f['username'].errors }">
+                        <div *ngIf="f['username'].errors" class="invalid-feedback" align="left">
+                          <div *ngIf="f['username'].errors?.['required']">Username is required</div>
                         </div>
                       </div>
 
                       <div class="mb-3">
                         <div class="float-end">
-                          <a routerLink="/auth/pass-reset/cover" class="text-muted">Forgot password?</a>
+                          <a routerLink="/auth/pass-reset/cover" class="text-muted">忘记密码了?</a>
                         </div>
-                        <label class="form-label" for="password-input">Password</label>
+                        <label class="form-label" for="password-input">密码</label>
                         <div class="position-relative auth-pass-inputgroup mb-3">
-                          <input [type]="fieldTextType ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="Enter password" id="password-input" formControlName="password"
-                                 [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                          <input [type]="fieldTextType ? 'text' : 'password'" class="form-control pe-5 password-input" placeholder="填入密码" id="password-input" formControlName="password"
+                                 [ngClass]="{ 'is-invalid': f['password'].errors }">
                           <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="mdi align-middle" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType
                                                 }" (click)="toggleFieldTextType()"></i></button>
-                          <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                          <div *ngIf="f['password'].errors" class="invalid-feedback">
                             <span *ngIf="f['password'].errors?.['required']">Password is required</span>
                           </div>
                         </div>
@@ -88,11 +88,11 @@
 
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
-                        <label class="form-check-label" for="auth-remember-check">Remember me</label>
+                        <label class="form-check-label" for="auth-remember-check">记住我</label>
                       </div>
 
                       <div class="mt-4">
-                        <button class="btn btn-success w-100" type="submit">Sign In</button>
+                        <button class="btn btn-success w-100" type="submit">登录</button>
                       </div>
 
                       <div class="mt-4 text-center">

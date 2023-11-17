@@ -51,7 +51,7 @@
                 <th>姓名</th>
                 <th>年级</th>
                 <th>电话</th>
-                <th>头像</th>
+                <th>状态</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -61,11 +61,11 @@
                 <td>{{model.name}}</td>
                 <td>{{model.grade}}</td>
                 <td>{{model.phone}}</td>
-                <td>{{model.avatar}}</td>
+                <td>{{model.status}}</td>
                 <td>
                   <ul class="list-inline hstack gap-2 mb-0">
                     <li class="list-inline-item edit" ngbTooltip="充值" placement="top">
-                      <a href="javascript:void(0);" (click)="openDialog(recharge)" class="text-muted d-inline-block">
+                      <a href="javascript:void(0);" (click)="rechargeDialog(rechargeTpl, model)" class="text-muted d-inline-block">
                         <i class="ri-money-cny-circle-fill fs-16"></i>
                       </a>
                     </li>
@@ -82,7 +82,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
                           <li>
-                            <a class="dropdown-item" href="javascript:void(0);" (click)="openDialog(password, model.id)">
+                            <a class="dropdown-item" href="javascript:void(0);" (click)="recoveryPasswordDialog(passwordTpl, model)">
                               <i class=" ri-lock-unlock-fill align-bottom me-2 text-muted float-start"></i>密码重置
                             </a>
                           </li>
@@ -214,11 +214,11 @@
       </div>
 
       <div class="mb-3">
-        <label for="avatar-field" class="form-label">头像</label>
-        <input type="text" id="avatar-field" class="form-control" placeholder="头像"
-               formControlName="avatar"
-               [ngClass]="{ 'is-invalid': form['avatar'].errors }" />
-        <div class="invalid-feedback">请输入头像。</div>
+        <label for="status-field" class="form-label">状态</label>
+        <select class="form-select" id="status-field" formControlName="status" >
+          <option value="ENABLED">启用</option>
+          <option value="DISABLE">禁用</option>
+        </select>
       </div>
 
     </div>
@@ -325,17 +325,31 @@
   </form>
 </ng-template>
 
-<ng-template #recharge role="document" let-modal>
+<ng-template #rechargeTpl role="document" let-modal>
   <div class="modal-header bg-light p-3">
-    <h5 class="modal-title">充值</h5>
+    <h5 class="modal-title">给学生充值</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="modal.dismiss('Cross click')">
     </button>
   </div>
-  <form (ngSubmit)="saveLearnableBook()" [formGroup]="learnableBookForm" class="tablelist-form" autocomplete="off">
+  <form (ngSubmit)="saveRecharge()" [formGroup]="rechargeForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <input type="hidden" name="student_id" formControlName="student_id" value=""  />
-      <input />
+      <input type="hidden" name="student_id"  formControlName="student_id">
+      <div class="mb-3">
+        <label for="student_name-field" class="form-label">姓名</label>
+        <input type="text" id="student_name-field" class="form-control" placeholder=""
+               formControlName="student_name" />
+      </div>
+      <div class="mb-3">
+        <label for="student_acct-field" class="form-label">账号</label>
+        <input type="text" id="student_acct-field" class="form-control" placeholder=""
+               formControlName="student_acct_no" />
+      </div>
+      <div class="mb-3">
+        <label for="card_password-field" class="form-label">充值卡密码</label>
+        <input type="number" id="card_password-field" class="form-control" placeholder=""
+               formControlName="card_password"/>
+      </div>
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
@@ -346,17 +360,27 @@
   </form>
 </ng-template>
 
-<ng-template #password role="document" let-modal>
+<ng-template #passwordTpl role="document" let-modal>
   <div class="modal-header bg-light p-3">
     <h5 class="modal-title">重置密码</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="modal.dismiss('Cross click')">
     </button>
   </div>
-  <form (ngSubmit)="saveLearnableBook()" [formGroup]="learnableBookForm" class="tablelist-form" autocomplete="off">
+  <form (ngSubmit)="saveRecoveryPassword()" [formGroup]="recoveryPasswordForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <input type="hidden" name="student_id" formControlName="student_id" value=""  />
-      <input />
+      <input type="hidden" name="user_id"  formControlName="id">
+      <div class="mb-3">
+        <label for="user_name-field" class="form-label">姓名</label>
+        <input type="text" id="user_name-field" class="form-control" placeholder=""
+               formControlName="name" />
+      </div>
+      <div class="mb-3">
+        <label for="recovery_password-field" class="form-label">默认密码</label>
+        <input type="text" id="recovery_password-field" class="form-control" placeholder="123456"
+               formControlName="recovery_password" />
+      </div>
+
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">

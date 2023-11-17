@@ -1,5 +1,5 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {BreadcrumbsComponent} from "../../shared/breadcrumbs/breadcrumbs.component";
 import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {
@@ -18,6 +18,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {MultijsDirective} from "../../shared/multijs.directive";
 import {MutijsSelectComponent} from "../../shared/mutijs-select/mutijs-select.component";
 import {SpinInputComponent} from "../../shared/spin-input/spin-input.component";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-student',
@@ -37,30 +38,44 @@ export class StudentComponent implements OnInit {
   learnableBookForm!: UntypedFormGroup;
   allBooks: any[] = [];
   state: any = {key: ""};
+  rechargeForm!: UntypedFormGroup;
+  recoveryPasswordForm!: UntypedFormGroup;
 
 
-
-  constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
+  constructor(private rest: RestApiService, private modal: NgbModal, private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
   }
 
   ngOnInit(): void {
     this.breadCrumbItems = [
-      { label: '学员' },
-      { label: '学生管理', active: true }
+      {label: '学员'},
+      {label: '学生管理', active: true}
     ];
 
     this.gForm = this.formBuilder.group({
       id: [null],
       name: ['', [Validators.required]],
       grade: [''],
-      avatar: [''],
+      status: [''],
       phone: ['']
     });
 
     this.learnableBookForm = this.formBuilder.group({
       student_id: ['', [Validators.required]],
       book_ids: [[], [Validators.required]]
+    });
+
+    this.rechargeForm = this.formBuilder.group({
+      student_id: [''],
+      student_name: [{value: '',  disabled: true}],
+      student_acct_no: [{value: '',  disabled: true}],
+      card_password: ['']
+    });
+
+    this.recoveryPasswordForm = this.formBuilder.group({
+      id: [''],
+      name: [{value: '',  disabled: true}],
+      recovery_password: ['']
     });
 
     this.searchSubject.pipe(
@@ -83,13 +98,13 @@ export class StudentComponent implements OnInit {
   }
 
   loadAllBooks() {
-    this.rest.index('books',{per: 1000}).subscribe(res => {
+    this.rest.index('books', {per: 1000}).subscribe(res => {
       this.allBooks = res.data;
     });
   }
 
   loadLearnableBook(student_id: string) {
-    this.rest.index('learnable_books', {student_id: student_id,per: 1000}).subscribe(res => {
+    this.rest.index('learnable_books', {student_id: student_id, per: 1000}).subscribe(res => {
       this.learnableBookForm.controls['book_ids'].setValue(res.data[0]?.book_ids || []);
     });
   }
@@ -105,15 +120,15 @@ export class StudentComponent implements OnInit {
 
   delConfirmDialog(id: any, content?: any) {
     this.modelId = id;
-    this.modal.open(content, { centered: true });
+    this.modal.open(content, {centered: true});
   }
 
   openDialog(content: any, id?: string) {
-    this.modal.open(content, { size: 'md', centered: true });
+    this.modal.open(content, {size: 'md', centered: true});
   }
 
   editDialog(content: any, id?: string) {
-    this.modal.open(content, { size: 'md', centered: true });
+    this.modal.open(content, {size: 'md', centered: true});
 
     if (id) {
       let modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
@@ -123,7 +138,7 @@ export class StudentComponent implements OnInit {
       this.gForm.controls['id'].setValue(model.id);
       this.gForm.controls['name'].setValue(model.name);
       this.gForm.controls['grade'].setValue(model?.grade);
-      this.gForm.controls['avatar'].setValue(model?.avatar);
+      this.gForm.controls['status'].setValue(model?.status);
       this.gForm.controls['phone'].setValue(model?.phone);
     }
   }
@@ -153,7 +168,7 @@ export class StudentComponent implements OnInit {
           this.modal.dismissAll();
           this.gForm.reset();
         });
-      }else{
+      } else {
         this.rest.create('students', this.gForm.value).subscribe(body => {
           this.models.push(body.data);
           this.modal.dismissAll();
@@ -167,36 +182,27 @@ export class StudentComponent implements OnInit {
     console.log(this.learnableBookForm.value);
     console.log(this.learnableBookForm.status);
     if (this.learnableBookForm.valid) {
-        this.rest.create('learnable_books', this.learnableBookForm.value).subscribe(res => {
-          this.modal.dismissAll();
-        });
+      this.rest.create('learnable_books', this.learnableBookForm.value).subscribe(res => {
+        this.modal.dismissAll();
+      });
     }
   }
 
   // Default
   counter = 1;
-  increment() {
-    this.counter++;
-  }
-
-  decrement() {
-    this.counter--;
-  }
 
 
+  priex: string = "";
+  grade: string = "";
 
-
-  priex :string = "";
-  grade :string = "";
-
-  studentNames :string[] = [];
+  studentNames: string[] = [];
 
   add() {
     console.log(this.studentNames);
     let ns = [];
-    if(this.counter === 1) {
+    if (this.counter === 1) {
       ns.push(this.priex);
-    }else{
+    } else {
       for (let i = 1; i <= this.counter; i++) {
         ns.push(this.priex + i);
       }
@@ -205,7 +211,7 @@ export class StudentComponent implements OnInit {
   }
 
   mutilCreate() {
-    let b :any[] = [];
+    let b: any[] = [];
     this.studentNames.forEach(n => {
       b.push({name: n, grade: this.grade});
     });
@@ -221,19 +227,57 @@ export class StudentComponent implements OnInit {
     this.loadLearnableBook(student_id);
     this.learnableBookForm.controls['student_id'].setValue(student_id);
 
-    this.modal.open(content, { size: 'md', centered: true });
+    this.modal.open(content, {size: 'md', centered: true});
   }
 
   bookKinds: any[] = [
-    {id:'PRIMARY',name:'PRIMARY'},
-    {id:'HIGH',name:'HIGH'},
-    {id:'COLLEGE',name:'COLLEGE'},
-    {id:'MIDDLE',name:'MIDDLE'},
-    {id:'FREE',name:'FREE'},
-    {id:'BABY',name:'BABY'},
-    {id:'COMMON',name:'COMMON'},
-    {id:'GO_ABROAD',name:'GO_ABROAD'}
+    {id: 'PRIMARY', name: 'PRIMARY'},
+    {id: 'HIGH', name: 'HIGH'},
+    {id: 'COLLEGE', name: 'COLLEGE'},
+    {id: 'MIDDLE', name: 'MIDDLE'},
+    {id: 'FREE', name: 'FREE'},
+    {id: 'BABY', name: 'BABY'},
+    {id: 'COMMON', name: 'COMMON'},
+    {id: 'GO_ABROAD', name: 'GO_ABROAD'}
   ];
+
+  rechargeDialog(content: any, model: any) {
+    this.rechargeForm.controls['student_id'].setValue(model.id);
+    this.rechargeForm.controls['student_name'].setValue(model.name);
+    this.rechargeForm.controls['student_acct_no'].setValue(model.acct_no);
+    this.modal.open(content, {size: 'md', centered: true});
+  }
+
+  saveRecharge() {
+    this.rest.post('students/recharge', this.rechargeForm.value).subscribe({
+      next: res => {
+        this.modal.dismissAll();
+        this.rechargeForm.reset();
+
+      },
+      error: err => {
+        this.modal.dismissAll();
+        Swal.fire({text: err.error.error, confirmButtonColor: '#239eba',});
+      }
+    });
+  }
+
+  recoveryPasswordDialog(content: any, model: any) {
+    this.recoveryPasswordForm.controls['id'].setValue(model.id);
+    this.recoveryPasswordForm.controls['name'].setValue(model.name);
+    this.modal.open(content, {size: 'md', centered: true});
+  }
+
+  saveRecoveryPassword() {
+    if (this.recoveryPasswordForm.valid) {
+      this.rest.post('users/recovery_password', this.recoveryPasswordForm.value).subscribe(res =>{
+        this.modal.dismissAll();
+
+      });
+
+    }
+
+  }
 
 
 }

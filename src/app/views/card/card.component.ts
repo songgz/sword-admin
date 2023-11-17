@@ -7,12 +7,13 @@ import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {RestApiService} from "../../core/services/rest-api.service";
 import {defineElement} from "@lordicon/element";
 import lottie from "lottie-web";
+import {SpinInputComponent} from "../../shared/spin-input/spin-input.component";
 
 @Component({
   selector: 'app-card',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule],
+  imports: [CommonModule, BreadcrumbsComponent, FormsModule, NgbPagination, NgbTooltip, ReactiveFormsModule, SpinInputComponent],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
@@ -22,16 +23,9 @@ export class CardComponent implements OnInit {
   models: any[] = [];
   gForm!: UntypedFormGroup;
   private searchUpdated: Subject<string> = new Subject();
-  schools: any[] = [];
 
   constructor(private rest: RestApiService, private modal: NgbModal,  private formBuilder: UntypedFormBuilder,) {
     defineElement(lottie.loadAnimation);
-  }
-
-  loadSchools() {
-    this.rest.index('schools').subscribe(body => {
-      this.schools = body.data;
-    });
   }
 
   ngOnInit(): void {
@@ -41,9 +35,9 @@ export class CardComponent implements OnInit {
     ];
 
     this.gForm = this.formBuilder.group({
-      school_id: [null, [Validators.required]],
+      batch_no: [this.generateBatchNumber()],
       kind: ['HALF_YEAR', [Validators.required]],
-      qty: ['1', [Validators.required]]
+      qty: [1, [Validators.required]]
     });
 
     this.searchUpdated.pipe(
@@ -54,7 +48,18 @@ export class CardComponent implements OnInit {
     });
 
     this.loadPage();
-    this.loadSchools();
+  }
+
+  generateBatchNumber(): string {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    return `${year}${month}${day}${hours}${minutes}${seconds}`;
   }
 
   search(event: Event) {
@@ -75,30 +80,20 @@ export class CardComponent implements OnInit {
 
 
   openModal(content: any) {
+    this.gForm.controls['batch_no'].setValue(this.generateBatchNumber());
     this.modal.open(content, { size: 'md', centered: true });
-  }
-
-
-  // Default
-  counter = 1;
-  increment() {
-    this.counter++;
-  }
-
-  decrement() {
-    this.counter--;
   }
 
   genCard() {
     let cards :any[] =[];
     let v = this.gForm.value;
     if (this.gForm.valid) {
-      for(let i = 0; i < this.counter; i++) {
-        cards.push({school_id: v.school_id, kind: v.kind});
+      for(let i = 0; i < v.qty; i++) {
+        cards.push({batch_no: v.batch_no, kind: v.kind});
       }
 
-      this.rest.post('cards/multi_create', {cards: cards}).subscribe(body => {
-        this.models = body.data;
+      this.rest.post('cards/multi_create', {cards: cards}).subscribe(res => {
+        this.models = res.data;
         this.modal.dismissAll();
       });
     }

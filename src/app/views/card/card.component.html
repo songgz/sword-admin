@@ -44,23 +44,25 @@
               <thead class="table-light text-muted">
               <tr>
                 <th>卡号</th>
-                <th>学校</th>
+                <th>批号</th>
                 <td>时长(天)</td>
-                <th>学生姓名</th>
-                <th>学生帐号</th>
                 <th>状态</th>
                 <th>激活时间</th>
+                <th>学校</th>
+                <th>学生姓名</th>
+                <th>学生帐号</th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let model of models">
                 <td>{{model.card_no}}</td>
-                <td>{{model.school_name}}</td>
+                <td>{{model.batch_no}}</td>
                 <td>{{model.days}}</td>
-                <td>{{model.student_name}}</td>
-                <td>{{model.student_acct_no}}</td>
                 <td>{{model.status}}</td>
                 <td>{{model.active_time}}</td>
+                <td>{{model.school_name}}</td>
+                <td>{{model.student_name}}</td>
+                <td>{{model.student_acct_no}}</td>
               </tr>
               </tbody>
             </table>
@@ -108,10 +110,8 @@
     <div class="modal-body">
 
       <div class="mb-3">
-        <label for="school-field" class="form-label">分校</label>
-        <select class="form-select" id="school-field" formControlName="school_id">
-          <option *ngFor="let school of schools" value="{{school.id}}">{{school.name}}</option>
-        </select>
+        <label for="batch_no-field" class="form-label">批号</label>
+        <input type="text" id="batch_no-field" class="form-control" placeholder=""  formControlName="batch_no" />
       </div>
 
       <div class="mb-3">
@@ -124,12 +124,8 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">数量</label><br>
-        <div class="input-step">
-          <button type="button" class="minus" (click)="decrement()">–</button>
-          <input type="number" formControlName="qty" class="product-quantity" value="{{counter}}" min="1" max="100" readonly>
-          <button type="button" class="plus" (click)="increment()">+</button>
-        </div>
+        <label class="form-label">数量</label>
+        <app-spin-input name="qty-field" formControlName="qty"></app-spin-input>
       </div>
 
     </div>
